@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\desktop\\projects\\desktops\\sportmatchmaker\\tournamentsmartengine\\..csproj": {}
+    "C:\\Users\\User\\desktop\\projects\\desktops\\smarttournament\\smarttournamentengine\\..csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\desktop\\projects\\desktops\\sportmatchmaker\\tournamentsmartengine\\..csproj": {
+    "C:\\Users\\User\\desktop\\projects\\desktops\\smarttournament\\smarttournamentengine\\..csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\desktop\\projects\\desktops\\sportmatchmaker\\tournamentsmartengine\\..csproj",
+        "projectUniqueName": "C:\\Users\\User\\desktop\\projects\\desktops\\smarttournament\\smarttournamentengine\\..csproj",
         "projectName": ".",
-        "projectPath": "C:\\Users\\User\\desktop\\projects\\desktops\\sportmatchmaker\\tournamentsmartengine\\..csproj",
+        "projectPath": "C:\\Users\\User\\desktop\\projects\\desktops\\smarttournament\\smarttournamentengine\\..csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\desktop\\projects\\desktops\\sportmatchmaker\\tournamentsmartengine\\obj\\",
+        "outputPath": "C:\\Users\\User\\desktop\\projects\\desktops\\smarttournament\\smarttournamentengine\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -43,6 +43,42 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[10.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[10.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[10.0.7, )"
+            },
+            "MinimalApis.Extensions": {
+              "target": "Package",
+              "version": "[0.11.0, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            },
+            "Serilog.Settings.Configuration": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[6.1.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
