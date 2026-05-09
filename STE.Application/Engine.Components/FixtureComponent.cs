@@ -4,7 +4,7 @@ using smarttournamentengine.STE.infrastructure;
 
 namespace smarttournamentengine.STE.Application.Engine.Components;
 
-public class FixtureEngine(DatabaseContext context, ILogger<FixtureEngine> logger)
+public class FixtureEngine(DatabaseContext context)
 {
     private readonly DatabaseContext databaseContext = context;
 

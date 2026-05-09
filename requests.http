@@ -52,4 +52,4 @@ POST http://localhost:5276/api/tournaments/update/standings/ffb24b388-09b1-40eb-
 GET http://localhost:5276/api/tournaments/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/table
 
 ###
-GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/group/65c555d9-4e1b-4958-a7cf-4a5c818f2dbd/table/standings
+GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/group/5f364fe3-ab57-4230-83f4-c18568aac05a/table/standings
