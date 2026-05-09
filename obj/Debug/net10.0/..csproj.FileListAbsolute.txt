@@ -195,3 +195,4 @@ C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\ob
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\..pdb
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\..genruntimeconfig.cache
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\ref\..dll
+C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\..sourcelink.json

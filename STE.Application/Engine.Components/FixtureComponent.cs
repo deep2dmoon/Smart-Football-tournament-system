@@ -4,7 +4,7 @@ using smarttournamentengine.STE.infrastructure;
 
 namespace smarttournamentengine.STE.Application.Engine.Components;
 
-public class FixtureEngine(DatabaseContext context)
+public class FixtureEngine(DatabaseContext context, ILogger<FixtureEngine> logger)
 {
     private readonly DatabaseContext databaseContext = context;
 
@@ -22,20 +22,19 @@ public class FixtureEngine(DatabaseContext context)
         Fixtures fixtures = new() { ID = Guid.NewGuid().ToString("N"), TournamentID = tournamentID };
 
 
-        foreach (Group group in databaseContext.Groups.Include(g => g.Teams))
+        foreach (Group group in databaseContext.Groups.Include(g => g.Teams).Include(g => g.Matches))
         {
 
             if (group.TournamentID == tournamentID)
             {
-                // foreach (Match match in group.Matches)
-                // {
-                //     group.Matches.Remove(match);
-                // }
+                group.Matches.Clear(); // remove every existing game fixtures 
 
                 for (int i = 0; i < group.Teams.Count; i++)
                 {
+
                     for (int j = i + 1; j < group.Teams.Count; j++)
                     {
+
                         string home;
                         string away;
                         Random random = new();
@@ -60,13 +59,13 @@ public class FixtureEngine(DatabaseContext context)
                         };
 
                         group.Matches.Add(match);
+                        // logger.LogInformation("group matches is {count}", group.Matches.Count);
                         fixtures.Matches.Add(match);
                     }
                 }
             }
         }
         databaseContext.Fixtures.Add(fixtures);
-
         await databaseContext.SaveChangesAsync();
         return new { fixtures };
     }
