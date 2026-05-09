@@ -17,6 +17,14 @@ public class TournamentEngine(DatabaseContext context_, GroupEngine groupEngine,
     public async Task<Response> CreateTournament(TournamentDTO tournamentDTO)
     {
         Tournament tournament = new() { TournamentID = Guid.NewGuid().ToString(), Name = tournamentDTO.Name };
+        foreach (Tournament tournament_ in databaseContext.Tournaments)
+        {
+            if (tournament_.Name == tournamentDTO.Name)
+            {
+                return new Response { Message = "Tournament name already exist" };
+            }
+        }
+
         databaseContext.Tournaments.Add(tournament);
         await databaseContext.SaveChangesAsync();
         return new Response { Message = $"New Tournament {tournament.Name}, ID {tournament.TournamentID} Created", code = 200, Status = Status.Ok };
@@ -52,15 +60,22 @@ public class TournamentEngine(DatabaseContext context_, GroupEngine groupEngine,
         return standings;
     }
 
-    public async Task<List<Standing>>? GetTable(string ID)
+    public async Task<List<Standing>>? GetOverallTable(string ID)
     {
         List<StandingsTable> standings = [.. databaseContext.StandingsTables.Include(x => x.Standings)];
         foreach (StandingsTable standingsTable in standings)
         {
             if (standingsTable.TournamentID == ID)
-                return standingsTable.Standings;
+                return standingsTable.Standings.OrderByDescending(x => x.Points).ToList();
         }
         return null!;
+    }
+
+
+    public List<Standing> GetStandingsInGroup(string groupId, string tournamentId)
+    {
+        List<Standing> standings = groupEngine.GetGroupTableStandings(groupId, tournamentId);
+        return standings;
     }
 
 }

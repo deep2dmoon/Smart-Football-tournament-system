@@ -31,7 +31,7 @@ public static class TournamentEndPoints
         TournamentGroup.MapPost("/new/", async (TournamentEngine engine, TournamentDTO tournamentDTO) =>
         {
             Response response = await engine.CreateTournament(tournamentDTO);
-            return Results.Ok(response);
+            return response.code != 200 ? Results.BadRequest(response) : Results.Ok(response);
         });
 
 
@@ -72,9 +72,18 @@ public static class TournamentEndPoints
 
         TournamentGroup.MapGet("/{tournamentID}/table", async (TournamentEngine engine, string tournamentID) =>
         {
-            List<Standing>? standings = await engine.GetTable(tournamentID)!;
+            List<Standing>? standings = await engine.GetOverallTable(tournamentID)!;
             return standings != null ? Results.Ok(standings) : Results.NoContent();
         });
+
+
+        TournamentGroup.MapGet("/{tournamentID}/group/{groupID}/table/standings", async (TournamentEngine engine, string groupID, string tournamentID) =>
+        {
+            List<Standing> standings = engine.GetStandingsInGroup(groupID, tournamentID);
+            return Results.Ok(standings);
+        });
+
+
         return TournamentGroup;
     }
 }

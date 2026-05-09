@@ -52,7 +52,76 @@ public class GroupEngine(DatabaseContext context, ILogger<GroupEngine> logger_)
         databaseContext.SaveChanges();
         return new Response { Message = $"Participants Grouped into", Status = Status.Ok, code = 200 };
     }
+
+
+    public List<Standing> GetGroupTableStandings(string groupID, string tournamentId)
+    {
+
+        Dictionary<string, Standing> standings = [];
+
+        foreach (Group group in databaseContext.Groups.Include(g => g.Matches).Where(g => g.TournamentID == tournamentId))
+        {
+            if (group.GroupID == groupID)
+            {
+                foreach (Match match in group.Matches)
+                {
+                    if (!standings.ContainsKey(match.HomeTeam))
+                    {
+                        standings[match.HomeTeam] = new Standing { ID = Guid.NewGuid().ToString(), TeamName = match.HomeTeam };
+                    }
+                    if (!standings.ContainsKey(match.AwayTeam))
+                    {
+                        standings[match.AwayTeam] = new Standing { ID = Guid.NewGuid().ToString(), TeamName = match.AwayTeam };
+                    }
+                    if (match.HomeScore > match.AwayScore)
+                    {
+                        standings[match.HomeTeam].Points += 3;
+                        standings[match.HomeTeam].GoalsConceded += match.AwayScore;
+                        standings[match.HomeTeam].GoalsScore += match.HomeScore;
+                        standings[match.AwayTeam].GoalsConceded += match.HomeScore;
+                        standings[match.AwayTeam].GoalsScore += match.AwayScore;
+                        standings[match.HomeTeam].GamePlayed++;
+                        standings[match.AwayTeam].GamePlayed++;
+                        standings[match.AwayTeam].GoalsDifference = standings[match.AwayTeam].GoalsScore - standings[match.AwayTeam].GoalsConceded;
+                        standings[match.HomeTeam].GoalsDifference = standings[match.HomeTeam].GoalsScore - standings[match.HomeTeam].GoalsConceded;
+                    }
+                    else if (match.AwayScore == match.HomeScore)
+                    {
+                        standings[match.HomeTeam].Points += 1;
+                        standings[match.AwayTeam].Points += 1;
+                        standings[match.HomeTeam].GoalsScore += match.HomeScore;
+                        standings[match.AwayTeam].GoalsScore += match.AwayScore;
+                        standings[match.AwayTeam].GoalsConceded += match.HomeScore;
+                        standings[match.HomeTeam].GoalsConceded += match.AwayScore;
+                        standings[match.HomeTeam].GamePlayed++;
+                        standings[match.AwayTeam].GamePlayed++;
+                        standings[match.HomeTeam].TeamName = match.HomeTeam;
+                        standings[match.AwayTeam].TeamName = match.AwayTeam;
+                        standings[match.HomeTeam].GoalsDifference = standings[match.HomeTeam].GoalsScore - standings[match.HomeTeam].GoalsConceded;
+                        standings[match.AwayTeam].GoalsDifference = standings[match.AwayTeam].GoalsScore - standings[match.AwayTeam].GoalsConceded;
+                    }
+                    else
+                    {
+                        standings[match.AwayTeam].Points += 3;
+                        standings[match.AwayTeam].GoalsScore += match.AwayScore;
+                        standings[match.HomeTeam].GoalsConceded += match.AwayScore;
+                        standings[match.AwayTeam].GoalsConceded += match.HomeScore;
+                        standings[match.HomeTeam].GoalsScore += match.HomeScore;
+                        standings[match.HomeTeam].GamePlayed++;
+                        standings[match.AwayTeam].GamePlayed++;
+                        standings[match.HomeTeam].TeamName = match.HomeTeam;
+                        standings[match.AwayTeam].TeamName = match.AwayTeam;
+                        standings[match.HomeTeam].GoalsDifference = standings[match.HomeTeam].GoalsScore - standings[match.HomeTeam].GoalsConceded;
+                        standings[match.AwayTeam].GoalsDifference = standings[match.AwayTeam].GoalsScore - standings[match.AwayTeam].GoalsConceded;
+                    }
+                }
+            }
+        }
+        List<Standing> standingTable = [.. standings.Values.OrderByDescending(x => x.Points)];
+        return standingTable;
+    }
 }
+
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Status

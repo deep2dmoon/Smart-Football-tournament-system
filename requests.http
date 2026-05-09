@@ -46,7 +46,10 @@ POST http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/
 GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/match/fixtures 
 
 ###  
-POST http://localhost:5276/api/tournaments/update/standings/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/8e88399a75c746adb28feaf2fb27379b
+POST http://localhost:5276/api/tournaments/update/standings/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/fff3d0a99e1943e182f5793040db538c
 
 ###
 GET http://localhost:5276/api/tournaments/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/table
+
+###
+GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/group/65c555d9-4e1b-4958-a7cf-4a5c818f2dbd/table/standings

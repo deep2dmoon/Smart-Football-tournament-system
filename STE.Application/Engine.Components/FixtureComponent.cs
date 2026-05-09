@@ -21,10 +21,17 @@ public class FixtureEngine(DatabaseContext context)
 
         Fixtures fixtures = new() { ID = Guid.NewGuid().ToString("N"), TournamentID = tournamentID };
 
+
         foreach (Group group in databaseContext.Groups.Include(g => g.Teams))
         {
+
             if (group.TournamentID == tournamentID)
             {
+                // foreach (Match match in group.Matches)
+                // {
+                //     group.Matches.Remove(match);
+                // }
+
                 for (int i = 0; i < group.Teams.Count; i++)
                 {
                     for (int j = i + 1; j < group.Teams.Count; j++)
@@ -51,6 +58,7 @@ public class FixtureEngine(DatabaseContext context)
                             AwayScore = random.Next(0, 6),
                             HomeScore = random.Next(0, 6)
                         };
+
                         group.Matches.Add(match);
                         fixtures.Matches.Add(match);
                     }
