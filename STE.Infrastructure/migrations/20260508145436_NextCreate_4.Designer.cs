@@ -11,8 +11,8 @@ using smarttournamentengine.STE.infrastructure;
 namespace _.ste.infrastructure.migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260505061448_InitialCreate_2")]
-    partial class InitialCreate_2
+    [Migration("20260508145436_NextCreate_4")]
+    partial class NextCreate_4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,17 +88,30 @@ namespace _.ste.infrastructure.migrations
                         });
                 });
 
+            modelBuilder.Entity("smarttournamentengine.STE.Entity.Fixtures", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TournamentID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Fixtures");
+                });
+
             modelBuilder.Entity("smarttournamentengine.STE.Entity.Group", b =>
                 {
                     b.Property<string>("GroupID")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("TournamentID")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GroupID");
-
-                    b.HasIndex("TournamentID");
 
                     b.ToTable("Groups");
                 });
@@ -115,6 +128,9 @@ namespace _.ste.infrastructure.migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FixturesID")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("HomeScore")
                         .HasColumnType("int");
 
@@ -124,7 +140,53 @@ namespace _.ste.infrastructure.migrations
 
                     b.HasKey("MatchID");
 
+                    b.HasIndex("FixturesID");
+
                     b.ToTable("Matches");
+                });
+
+            modelBuilder.Entity("smarttournamentengine.STE.Entity.Standing", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("GamePlayed")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoalsConceded")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoalsDifference")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoalsScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TableID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TeamName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("TableID");
+
+                    b.ToTable("Standings");
+                });
+
+            modelBuilder.Entity("smarttournamentengine.STE.Entity.Table", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Tables");
                 });
 
             modelBuilder.Entity("smarttournamentengine.STE.Entity.Team", b =>
@@ -192,12 +254,23 @@ namespace _.ste.infrastructure.migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Role")
-                        .HasColumnType("int");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = "executives-id",
+                            Email = "user@exec.football",
+                            Name = "John Doe",
+                            Password = "exec-pass",
+                            Role = "Executive"
+                        });
                 });
 
             modelBuilder.Entity("smarttournamentengine.Tournament", b =>
@@ -209,16 +282,26 @@ namespace _.ste.infrastructure.migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TournamentMode")
+                        .HasColumnType("int");
+
                     b.HasKey("TournamentID");
 
                     b.ToTable("Tournaments");
                 });
 
-            modelBuilder.Entity("smarttournamentengine.STE.Entity.Group", b =>
+            modelBuilder.Entity("smarttournamentengine.STE.Entity.Match", b =>
                 {
-                    b.HasOne("smarttournamentengine.Tournament", null)
-                        .WithMany("Groups")
-                        .HasForeignKey("TournamentID");
+                    b.HasOne("smarttournamentengine.STE.Entity.Fixtures", null)
+                        .WithMany("Matches")
+                        .HasForeignKey("FixturesID");
+                });
+
+            modelBuilder.Entity("smarttournamentengine.STE.Entity.Standing", b =>
+                {
+                    b.HasOne("smarttournamentengine.STE.Entity.Table", null)
+                        .WithMany("Standings")
+                        .HasForeignKey("TableID");
                 });
 
             modelBuilder.Entity("smarttournamentengine.STE.Entity.Team", b =>
@@ -232,15 +315,23 @@ namespace _.ste.infrastructure.migrations
                         .HasForeignKey("TournamentID");
                 });
 
+            modelBuilder.Entity("smarttournamentengine.STE.Entity.Fixtures", b =>
+                {
+                    b.Navigation("Matches");
+                });
+
             modelBuilder.Entity("smarttournamentengine.STE.Entity.Group", b =>
                 {
                     b.Navigation("Teams");
                 });
 
+            modelBuilder.Entity("smarttournamentengine.STE.Entity.Table", b =>
+                {
+                    b.Navigation("Standings");
+                });
+
             modelBuilder.Entity("smarttournamentengine.Tournament", b =>
                 {
-                    b.Navigation("Groups");
-
                     b.Navigation("Participants");
                 });
 #pragma warning restore 612, 618

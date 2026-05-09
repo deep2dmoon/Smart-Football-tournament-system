@@ -13,6 +13,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     public DbSet<Alphabet> Alphabets => Set<Alphabet>();
     public DbSet<Tournament> Tournaments => Set<Tournament>();
     public DbSet<Fixtures> Fixtures => Set<Fixtures>();
+    public DbSet<Standing> Standings => Set<Standing>();
+    public DbSet<StandingsTable> StandingsTables => Set<StandingsTable>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,6 +28,16 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
           new Alphabet() { ID = 7, Value = "H" },
            new Alphabet() { ID = 8, Value = "I" },
             new Alphabet() { ID = 9, Value = "J" }
+        );
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                ID = "executives-id",
+                Email = "user@exec.football",
+                Name = "John Doe",
+                Password = "exec-pass",
+                Role = "Executive"
+            }
         );
         base.OnModelCreating(modelBuilder);
     }

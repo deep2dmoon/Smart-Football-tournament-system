@@ -1,1 +1,52 @@
+
+####
 GET  http://localhost:5276/api/tournaments/
+
+
+###
+POST http://localhost:5276/api/tournaments/new
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ1c2VyQGV4ZWMuZm9vdGJhbGwiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImV4ZWN1dGl2ZXMtaWQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJFeGVjdXRpdmUiLCJleHAiOjE3NzgxNzIyNjh9.tjZTcNC58NVoeTtCnk8xAjUaWCjMqvTNMDxETWT4BL8
+
+{
+    "Name":"Saudi Pro League"
+}
+
+###
+POST http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/add/participants/team
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ1c2VyQGV4ZWMuZm9vdGJhbGwiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImV4ZWN1dGl2ZXMtaWQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJFeGVjdXRpdmUiLCJleHAiOjE3NzgyNTUyMjF9.__3cUXcPeE-FwgKT8f_3LbOI4RzDBgj-Jiex-8xknZM
+
+{
+    "TeamName":"Man city FC"
+}
+
+###
+POST   http://localhost:5276/api/auth/login
+Content-Type: application/json
+
+{
+    "Email":"user@exec.football",
+    "Password":"exec-pass"
+}
+
+
+###
+POST http://localhost:5276/api/tournaments/create/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/group-participants
+
+###
+GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/groups
+
+
+###
+POST http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/build/fixtures
+
+
+###
+GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/match/fixtures 
+
+###  
+POST http://localhost:5276/api/tournaments/update/standings/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/8e88399a75c746adb28feaf2fb27379b
+
+###
+GET http://localhost:5276/api/tournaments/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/table

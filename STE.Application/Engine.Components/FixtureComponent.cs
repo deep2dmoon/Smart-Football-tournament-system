@@ -7,15 +7,23 @@ namespace smarttournamentengine.STE.Application.Engine.Components;
 public class FixtureEngine(DatabaseContext context)
 {
     private readonly DatabaseContext databaseContext = context;
+
     public async Task<object> BuildFixtures(string tournamentID)
     {
-        Random random = new();
-        Fixtures fixtures_ = new() { FixtureId = Guid.NewGuid().ToString("N") };
 
-        Tournament? tournament = await databaseContext.Tournaments.FirstOrDefaultAsync(t => t.TournamentID == tournamentID);
-        if (tournament != null)
+        foreach (Fixtures fixture in databaseContext.Fixtures.Include(g => g.Matches))
         {
-            foreach (Group group in tournament.Groups)
+            if (fixture.TournamentID == tournamentID) databaseContext.Fixtures.Remove(fixture);
+            databaseContext.Fixtures.Remove(fixture);
+
+        }
+
+
+        Fixtures fixtures = new() { ID = Guid.NewGuid().ToString("N"), TournamentID = tournamentID };
+
+        foreach (Group group in databaseContext.Groups.Include(g => g.Teams))
+        {
+            if (group.TournamentID == tournamentID)
             {
                 for (int i = 0; i < group.Teams.Count; i++)
                 {
@@ -23,6 +31,7 @@ public class FixtureEngine(DatabaseContext context)
                     {
                         string home;
                         string away;
+                        Random random = new();
                         if (i + j % 2 == 0)
                         {
                             home = group.Teams[i].Name;
@@ -30,23 +39,28 @@ public class FixtureEngine(DatabaseContext context)
                         }
                         else
                         {
-                            home = group.Teams[i].Name;
-                            away = group.Teams[j].Name;
+                            home = group.Teams[j].Name;
+                            away = group.Teams[i].Name;
                         }
+
                         Match match = new()
                         {
-                            MatchID = Guid.NewGuid().ToString("N"),
+                            MatchID = Guid.NewGuid().ToString(),
                             HomeTeam = home,
                             AwayTeam = away,
+                            AwayScore = random.Next(0, 6),
+                            HomeScore = random.Next(0, 6)
                         };
-                        fixtures_.Matches!.Add(match);
+                        group.Matches.Add(match);
+                        fixtures.Matches.Add(match);
                     }
                 }
             }
-
         }
-        tournament!.Fixtures.Add(fixtures_);
+        databaseContext.Fixtures.Add(fixtures);
+
         await databaseContext.SaveChangesAsync();
-        return new { fixtures = fixtures_ };
+        return new { fixtures };
     }
+
 }

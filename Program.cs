@@ -5,12 +5,17 @@ using Serilog;
 using smarttournamentengine.STE.Application;
 using smarttournamentengine.STE.Application.Engine.Components;
 using smarttournamentengine.STE.Controller.Endpoints;
+using smarttournamentengine.STE.Controller.Endpoints.Auth;
 using smarttournamentengine.STE.infrastructure;
+using smarttournamentengine.STE.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<TournamentEngine>();
 builder.Services.AddScoped<FixtureEngine>();
 builder.Services.AddScoped<GroupEngine>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<ParticipantOnboardEngine>();
+builder.Services.AddScoped<StandingUpdateComponent>();
 
 builder.Host.UseSerilog((context, services, config) =>
 {
@@ -36,5 +41,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseSerilogRequestLogging();
 app.MapTournamentEndpoints();
+app.MapAuthEndpoints();
 
 app.Run();

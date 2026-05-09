@@ -1,40 +1,71 @@
+using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 using smarttournamentengine.STE.Entity;
 using smarttournamentengine.STE.infrastructure;
 
 namespace smarttournamentengine.STE.Application.Engine.Components;
 
-public class GroupEngine(DatabaseContext context)
+public class GroupEngine(DatabaseContext context, ILogger<GroupEngine> logger_)
 {
+    private readonly ILogger<GroupEngine> logger = logger_;
     private DatabaseContext databaseContext = context;
-    public async Task<object> GroupTeams(string tournamentID, int groupNumber)
+
+
+    public async Task<Response>? GroupTeams(string tournamentID, int peerNumber)
     {
-        Tournament tournament = databaseContext.Tournaments.FirstOrDefault(t => t.TournamentID == tournamentID)!;
-        List<Alphabet> alphabets = [.. databaseContext.Alphabets];
+        Tournament tournament = databaseContext.Tournaments.Include(t =>
+        t.Participants).FirstOrDefault(t => t.TournamentID == tournamentID)!;
 
         Random random = new();
-        int randomAlphabet = random.Next(0, alphabets.Count);
 
-        if (groupNumber % 2 != 0)
-            return new { response = "Group can only be evenly distributed" };
-
-        if (tournament.Participants.Count < 2 || tournament.Participants.Count % 2 != 0)
-            return new { response = "Add Tournament Participants,to evenly distribute groups" };
-        List<Group> groups = [];
-        List<Team> group = [];
-        for (int i = 0; i < groupNumber; i++)
+        if (tournament != null)
         {
-            while (group.Count < 2)
-            {
-                int randomTeam = random.Next(0, tournament.Participants.Count);
-                if (group.Contains(tournament.Participants[randomTeam]!)) continue;
-                group.Add(tournament.Participants[randomTeam]);
-                tournament.Participants.Remove(tournament.Participants[randomTeam]);
-            }
-            Group NewGroup = new() { GroupID = Guid.NewGuid().ToString("N"), Teams = group }; group = [];
-            groups.Add(NewGroup);
+            if (tournament.Participants.Count < 2 || tournament.Participants.Count % 2 != 0)
+                return new Response { Message = "Add Tournament Participants, to evenly distribute groups", code = 403, Status = Status.BadRequest };
         }
-        tournament.Groups.AddRange(groups);
-        await databaseContext.SaveChangesAsync();
-        return new { response = "Participants Grouped", groups = tournament.Groups };
+        else
+        {
+            return new Response { Message = "Tournament not found", Status = Status.NotFound, code = 404 };
+        }
+        if (databaseContext.Groups.FirstOrDefault(g => g.TournamentID == tournamentID) != null)
+        {
+            databaseContext.Groups.RemoveRange(databaseContext.Groups.Include(g => g.Matches).Where(g => g.TournamentID == tournamentID).ToList());
+        }
+
+        var bucket = tournament.Participants;
+        var shuffled = bucket.OrderBy(t => random.Next()).ToList(); // shuffle the list
+        var groups = new List<List<Team>>();
+
+        for (int i = 0; i < shuffled.Count; i += peerNumber)
+        {
+            var group = shuffled.Skip(i).Take(peerNumber).ToList();
+            groups.AddRange(group);
+        }
+
+        foreach (List<Team> group in groups)
+        {
+            Group NewGroup = new() { GroupID = Guid.NewGuid().ToString(), TournamentID = tournamentID };
+            NewGroup.Teams.AddRange(group);
+            databaseContext.Groups.Add(NewGroup);
+        }
+
+        databaseContext.SaveChanges();
+        return new Response { Message = $"Participants Grouped into", Status = Status.Ok, code = 200 };
     }
+}
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum Status
+{
+    BadRequest,
+    NotFound,
+    Ok
+
+}
+public class Response
+{
+    public int code { get; set; }
+    public Status Status { get; set; }
+    public required string Message { get; set; }
+
 }

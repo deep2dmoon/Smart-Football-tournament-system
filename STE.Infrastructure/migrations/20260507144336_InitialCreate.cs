@@ -26,29 +26,27 @@ namespace _.ste.infrastructure.migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Fixtures",
+                columns: table => new
+                {
+                    ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TournamentID = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fixtures", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Groups",
                 columns: table => new
                 {
-                    GroupID = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    GroupID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TournamentID = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Groups", x => x.GroupID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Matches",
-                columns: table => new
-                {
-                    MatchID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    HomeTeam = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AwayTeam = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HomeScore = table.Column<int>(type: "int", nullable: false),
-                    AwayScore = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Matches", x => x.MatchID);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,6 +64,19 @@ namespace _.ste.infrastructure.migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tournaments",
+                columns: table => new
+                {
+                    TournamentID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TournamentMode = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tournaments", x => x.TournamentID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -73,11 +84,32 @@ namespace _.ste.infrastructure.migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<int>(type: "int", nullable: true)
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Matches",
+                columns: table => new
+                {
+                    MatchID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HomeTeam = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AwayTeam = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HomeScore = table.Column<int>(type: "int", nullable: false),
+                    AwayScore = table.Column<int>(type: "int", nullable: false),
+                    FixturesID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Matches", x => x.MatchID);
+                    table.ForeignKey(
+                        name: "FK_Matches_Fixtures_FixturesID",
+                        column: x => x.FixturesID,
+                        principalTable: "Fixtures",
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -86,7 +118,9 @@ namespace _.ste.infrastructure.migrations
                 {
                     TeamID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GroupID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    TournamentMode = table.Column<int>(type: "int", nullable: false),
+                    GroupID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TournamentID = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,6 +130,11 @@ namespace _.ste.infrastructure.migrations
                         column: x => x.GroupID,
                         principalTable: "Groups",
                         principalColumn: "GroupID");
+                    table.ForeignKey(
+                        name: "FK_Teams_Tournaments_TournamentID",
+                        column: x => x.TournamentID,
+                        principalTable: "Tournaments",
+                        principalColumn: "TournamentID");
                 });
 
             migrationBuilder.InsertData(
@@ -114,10 +153,25 @@ namespace _.ste.infrastructure.migrations
                     { 9, "J" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "ID", "Email", "Name", "Password", "Role" },
+                values: new object[] { "executives-id", "user@exec.football", "John Doe", "exec-pass", "Executive" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_FixturesID",
+                table: "Matches",
+                column: "FixturesID");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_GroupID",
                 table: "Teams",
                 column: "GroupID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teams_TournamentID",
+                table: "Teams",
+                column: "TournamentID");
         }
 
         /// <inheritdoc />
@@ -139,7 +193,13 @@ namespace _.ste.infrastructure.migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
+                name: "Fixtures");
+
+            migrationBuilder.DropTable(
                 name: "Groups");
+
+            migrationBuilder.DropTable(
+                name: "Tournaments");
         }
     }
 }
