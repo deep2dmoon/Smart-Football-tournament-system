@@ -49,7 +49,7 @@ public class FixtureEngine(DatabaseContext context)
                             away = group.Teams[i].Name;
                         }
 
-                        Match match = new()
+                        Match homeMatch = new()
                         {
                             MatchID = Guid.NewGuid().ToString(),
                             HomeTeam = home,
@@ -58,9 +58,18 @@ public class FixtureEngine(DatabaseContext context)
                             HomeScore = random.Next(0, 6)
                         };
 
-                        group.Matches.Add(match);
+                        Match awayMatch = new()
+                        {
+                            MatchID = Guid.NewGuid().ToString(),
+                            HomeTeam = away,
+                            AwayTeam = home,
+                            AwayScore = random.Next(0, 6),
+                            HomeScore = random.Next(0, 6)
+                        };
+                     
+                        group.Matches.AddRange([homeMatch, awayMatch]);
                         // logger.LogInformation("group matches is {count}", group.Matches.Count);
-                        fixtures.Matches.Add(match);
+                        fixtures.Matches.AddRange([homeMatch, awayMatch]);
                     }
                 }
             }

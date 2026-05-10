@@ -16,9 +16,9 @@ public static class TournamentEndPoints
         databaseContext.Tournaments.Include(t => t.Participants).ToList()
         );
 
-        TournamentGroup.MapPost("/create/{tournamentId}/group-participants", async (string tournamentId, TournamentEngine engine) =>
+        TournamentGroup.MapPost("/create/{tournamentId}/group/{grounNumber}/participants", async (string tournamentId, TournamentEngine engine, int grounNumber) =>
         {
-            Response response = await engine.SpreadToGroups(tournamentId, 3);
+            Response response = await engine.SpreadToGroups(tournamentId, grounNumber);
             return response.Status switch
             {
                 Status.BadRequest => Results.BadRequest(response),
@@ -83,6 +83,11 @@ public static class TournamentEndPoints
             return Results.Ok(standings);
         });
 
+
+        TournamentGroup.MapPatch("/{tournamentID}/disqualify", (string tournamentID, TournamentEngine engine) =>
+        {
+            engine.DisQualifyAndMakeNewParticipants(tournamentID);
+        });
 
         return TournamentGroup;
     }

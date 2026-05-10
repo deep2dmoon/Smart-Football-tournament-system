@@ -15,10 +15,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hc
 ###
 POST http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/add/participants/team
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ1c2VyQGV4ZWMuZm9vdGJhbGwiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImV4ZWN1dGl2ZXMtaWQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJFeGVjdXRpdmUiLCJleHAiOjE3NzgyNTUyMjF9.__3cUXcPeE-FwgKT8f_3LbOI4RzDBgj-Jiex-8xknZM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ1c2VyQGV4ZWMuZm9vdGJhbGwiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImV4ZWN1dGl2ZXMtaWQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJFeGVjdXRpdmUiLCJleHAiOjE3NzgzNzU5MTN9.ANIxIDu93Rf4-6wfeKkaCJF_LdTLEgW0EeIAU7lEd2Q
 
 {
-    "TeamName":"Man city FC"
+    "TeamName":"Middlesborough FC"
 }
 
 ###
@@ -32,7 +32,7 @@ Content-Type: application/json
 
 
 ###
-POST http://localhost:5276/api/tournaments/create/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/group-participants
+POST http://localhost:5276/api/tournaments/create/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/group/2/participants
 
 ###
 GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/groups
@@ -46,10 +46,14 @@ POST http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/
 GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/match/fixtures 
 
 ###  
-POST http://localhost:5276/api/tournaments/update/standings/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/fff3d0a99e1943e182f5793040db538c
+POST http://localhost:5276/api/tournaments/update/standings/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/7e4879e0a8db4a0f9a56a0467510f47f
 
 ###
 GET http://localhost:5276/api/tournaments/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/table
 
 ###
-GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/group/5f364fe3-ab57-4230-83f4-c18568aac05a/table/standings
+GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/group/21681239-864b-4f52-8db9-b7d6493f04d5/table/standings
+
+
+###
+PATCH  http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/disqualify

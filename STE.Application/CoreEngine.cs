@@ -37,6 +37,15 @@ public class TournamentEngine(DatabaseContext context_, GroupEngine groupEngine,
 
     public async Task<Response> SpreadToGroups(string tournamentID, int peerNumber)
     {
+
+        foreach (Group group in databaseContext.Groups.Include(x => x.Matches).Include(x => x.Teams))
+        {
+            if (group.TournamentID == tournamentID)
+            {
+                databaseContext.Groups.Remove(group);
+            }
+        }
+
         Response response = await groupEngine.GroupTeams(tournamentID, peerNumber)!;
         return response;
     }
@@ -78,4 +87,35 @@ public class TournamentEngine(DatabaseContext context_, GroupEngine groupEngine,
         return standings;
     }
 
+
+    public void DisQualifyAndMakeNewParticipants(string tournamentID)
+    {
+        var groups = databaseContext.Groups.Include(x => x.Matches).Include(x => x.Teams).Where(x => x.TournamentID == tournamentID).ToList();
+
+        Tournament? tournament = databaseContext.Tournaments
+       .Include(x => x.Participants).FirstOrDefault(t => t.TournamentID == tournamentID);
+        tournament?.Participants.Clear();
+        if (groups != null)
+            foreach (Group group in groups)
+            {
+                List<Standing> groupStandings = groupEngine.GetGroupTableStandings(group.GroupID, tournamentID);
+                Standing? lowestStanding = groupStandings.MinBy(x => x.Points);
+                if (lowestStanding != null)
+                {
+
+                    Team? team = group.Teams.FirstOrDefault(t => t.Name == lowestStanding.TeamName);
+                    List<Team> qualifiedTeams = [.. group.Teams.Where(t => t.Name != team!.Name)];
+                    logger.LogInformation("team {team}", qualifiedTeams.Count);
+                    foreach (Team team_ in qualifiedTeams)
+                    {
+                        tournament!.Participants.Add(team_);
+
+                    }
+
+                }
+
+            }
+
+        databaseContext.SaveChanges();
+    }
 }

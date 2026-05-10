@@ -27,10 +27,7 @@ public class GroupEngine(DatabaseContext context, ILogger<GroupEngine> logger_)
         {
             return new Response { Message = "Tournament not found", Status = Status.NotFound, code = 404 };
         }
-        if (databaseContext.Groups.FirstOrDefault(g => g.TournamentID == tournamentID) != null)
-        {
-            databaseContext.Groups.RemoveRange(databaseContext.Groups.Include(g => g.Matches).Where(g => g.TournamentID == tournamentID).ToList());
-        }
+
 
         var bucket = tournament.Participants;
         var shuffled = bucket.OrderBy(t => random.Next()).ToList(); // shuffle the list
@@ -41,11 +38,15 @@ public class GroupEngine(DatabaseContext context, ILogger<GroupEngine> logger_)
             var group = shuffled.Skip(i).Take(peerNumber).ToList();
             groups.AddRange(group);
         }
+     
+
+      
 
         foreach (List<Team> group in groups)
         {
             Group NewGroup = new() { GroupID = Guid.NewGuid().ToString(), TournamentID = tournamentID };
             NewGroup.Teams.AddRange(group);
+
             databaseContext.Groups.Add(NewGroup);
         }
 

@@ -39,6 +39,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Role = "Executive"
             }
         );
+
+        modelBuilder.Entity<Group>().HasMany(x => x.Matches).WithOne().OnDelete(DeleteBehavior.Cascade);
         base.OnModelCreating(modelBuilder);
     }
 }

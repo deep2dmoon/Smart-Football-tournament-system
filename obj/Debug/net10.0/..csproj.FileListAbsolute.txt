@@ -180,6 +180,7 @@ C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\ob
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\..csproj.CoreCompileInputs.cache
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\..MvcApplicationPartsAssemblyInfo.cs
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\..MvcApplicationPartsAssemblyInfo.cache
+C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\..sourcelink.json
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
@@ -195,4 +196,3 @@ C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\ob
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\..pdb
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\..genruntimeconfig.cache
 C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\ref\..dll
-C:\Users\User\desktop\projects\desktops\smarttournament\smarttournamentengine\obj\Debug\net10.0\..sourcelink.json
