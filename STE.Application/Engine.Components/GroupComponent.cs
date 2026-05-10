@@ -118,7 +118,7 @@ public class GroupEngine(DatabaseContext context, ILogger<GroupEngine> logger_)
                 }
             }
         }
-        List<Standing> standingTable = [.. standings.Values.OrderByDescending(x => x.Points)];
+        List<Standing> standingTable = [.. standings.Values.OrderByDescending(x => x.Points).OrderByDescending(x=>x.GoalsDifference).OrderByDescending(x=>x.GoalsScore)];
         return standingTable;
     }
 }

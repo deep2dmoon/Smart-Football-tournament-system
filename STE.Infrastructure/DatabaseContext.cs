@@ -41,6 +41,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
         );
 
         modelBuilder.Entity<Group>().HasMany(x => x.Matches).WithOne().OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<StandingsTable>().HasMany(x => x.Standings).WithOne().OnDelete(DeleteBehavior.Cascade);
         base.OnModelCreating(modelBuilder);
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using smarttournamentengine.STE.Entity;
 using smarttournamentengine.STE.infrastructure;
 
@@ -9,6 +10,12 @@ public class StandingUpdateComponent(DatabaseContext databaseContext, ILogger<St
 
     public async Task<List<Standing>>? UpdateStandings(string tournamentID, string fixtureID)
     {
+
+        List<StandingsTable> tables = databaseContext.StandingsTables.Where(s => s.TournamentID == tournamentID).ToList();
+        foreach (StandingsTable table1 in tables)
+        {
+            databaseContext.StandingsTables.Remove(table1);
+        }
 
         Dictionary<string, Standing> standings = [];
         logger.LogInformation("total fixture is {total}", databaseContext.Fixtures.Count());
@@ -88,6 +95,7 @@ public class StandingUpdateComponent(DatabaseContext databaseContext, ILogger<St
         }
         var list = standings.Values.OrderByDescending(s => s.Points).OrderByDescending(s => s.GoalsDifference).ToList();
         logger.LogInformation("the list of the groups {total}", list.Count);
+        
         StandingsTable table = new()
         {
             ID = Guid.NewGuid().ToString(),

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using smarttournamentengine.STE.Entity;
 using smarttournamentengine.STE.infrastructure;
@@ -66,9 +67,8 @@ public class FixtureEngine(DatabaseContext context)
                             AwayScore = random.Next(0, 6),
                             HomeScore = random.Next(0, 6)
                         };
-                     
+
                         group.Matches.AddRange([homeMatch, awayMatch]);
-                        // logger.LogInformation("group matches is {count}", group.Matches.Count);
                         fixtures.Matches.AddRange([homeMatch, awayMatch]);
                     }
                 }

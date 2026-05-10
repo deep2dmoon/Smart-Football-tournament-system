@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using smarttournamentengine.STE.Application;
 using smarttournamentengine.STE.Application.Engine.Components;
+using smarttournamentengine.STE.Application.Workers;
 using smarttournamentengine.STE.Controller.Endpoints;
 using smarttournamentengine.STE.Controller.Endpoints.Auth;
 using smarttournamentengine.STE.infrastructure;
@@ -16,6 +17,7 @@ builder.Services.AddScoped<GroupEngine>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ParticipantOnboardEngine>();
 builder.Services.AddScoped<StandingUpdateComponent>();
+builder.Services.AddHostedService<Streamer>();
 
 builder.Host.UseSerilog((context, services, config) =>
 {

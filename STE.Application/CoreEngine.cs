@@ -1,11 +1,18 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using smarttournamentengine.STE.Application.Engine.Components;
 using smarttournamentengine.STE.DTOs;
 using smarttournamentengine.STE.Entity;
 using smarttournamentengine.STE.infrastructure;
 namespace smarttournamentengine.STE.Application;
 
-public class TournamentEngine(DatabaseContext context_, GroupEngine groupEngine, FixtureEngine fixturEngine_, ParticipantOnboardEngine participantOnboardEngine_, ILogger<TournamentEngine> logger_, StandingUpdateComponent standingUpdateComponent_)
+public class TournamentEngine(
+    DatabaseContext context_,
+    GroupEngine groupEngine,
+    FixtureEngine fixturEngine_,
+    ParticipantOnboardEngine participantOnboardEngine_,
+    ILogger<TournamentEngine> logger_,
+    StandingUpdateComponent standingUpdateComponent_)
 {
     private readonly ILogger<TournamentEngine> logger = logger_;
     private readonly FixtureEngine fixtureEngine = fixturEngine_;
@@ -14,8 +21,11 @@ public class TournamentEngine(DatabaseContext context_, GroupEngine groupEngine,
     private readonly ParticipantOnboardEngine participantOnboardEngine = participantOnboardEngine_;
     private readonly StandingUpdateComponent standingUpdateComponent = standingUpdateComponent_;
 
+
+
     public async Task<Response> CreateTournament(TournamentDTO tournamentDTO)
     {
+
         Tournament tournament = new() { TournamentID = Guid.NewGuid().ToString(), Name = tournamentDTO.Name };
         foreach (Tournament tournament_ in databaseContext.Tournaments)
         {
@@ -94,28 +104,45 @@ public class TournamentEngine(DatabaseContext context_, GroupEngine groupEngine,
 
         Tournament? tournament = databaseContext.Tournaments
        .Include(x => x.Participants).FirstOrDefault(t => t.TournamentID == tournamentID);
-        tournament?.Participants.Clear();
+        tournament?.Participants.Clear(); // REMOVE EXISTING PARTICIPANTS
+
+
         if (groups != null)
             foreach (Group group in groups)
             {
                 List<Standing> groupStandings = groupEngine.GetGroupTableStandings(group.GroupID, tournamentID);
-                Standing? lowestStanding = groupStandings.MinBy(x => x.Points);
-                if (lowestStanding != null)
+                List<Standing> qualifiedStandings = [.. groupStandings.OrderByDescending(s => s.Points & s.GoalsDifference).Take(2)];
+                if (qualifiedStandings != null)
                 {
-
-                    Team? team = group.Teams.FirstOrDefault(t => t.Name == lowestStanding.TeamName);
-                    List<Team> qualifiedTeams = [.. group.Teams.Where(t => t.Name != team!.Name)];
-                    logger.LogInformation("team {team}", qualifiedTeams.Count);
-                    foreach (Team team_ in qualifiedTeams)
+                    foreach (Standing standing in qualifiedStandings)
                     {
-                        tournament!.Participants.Add(team_);
-
+                        Team? team = group.Teams.FirstOrDefault(t => t.Name == standing.TeamName);
+                        tournament!.Participants.Add(team!);
                     }
-
                 }
 
             }
 
         databaseContext.SaveChanges();
+    }
+
+
+    public async Task PlayMatch()
+    {
+        Random random = new();
+        List<Fixtures> fixtures = databaseContext.Fixtures.Include(x => x.Matches).ToList();
+
+        Queue<Match> queueMatches = new();
+        foreach (Fixtures fixtures_ in fixtures)
+        {
+            if (fixtures_ != null)
+                foreach (Match match in fixtures_.Matches)
+                    queueMatches.Enqueue(match);
+        }
+        foreach (Match match in queueMatches)
+        {
+            logger.LogInformation("Now playing match {match}", match.MatchID);
+            await Task.Delay(TimeSpan.FromSeconds(10));
+        }
     }
 }

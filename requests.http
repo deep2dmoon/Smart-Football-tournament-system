@@ -6,7 +6,7 @@ GET  http://localhost:5276/api/tournaments/
 ###
 POST http://localhost:5276/api/tournaments/new
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ1c2VyQGV4ZWMuZm9vdGJhbGwiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImV4ZWN1dGl2ZXMtaWQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJFeGVjdXRpdmUiLCJleHAiOjE3NzgxNzIyNjh9.tjZTcNC58NVoeTtCnk8xAjUaWCjMqvTNMDxETWT4BL8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ1c2VyQGV4ZWMuZm9vdGJhbGwiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImV4ZWN1dGl2ZXMtaWQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJFeGVjdXRpdmUiLCJleHAiOjE3NzgzODc3MjR9.oF4JZYWFtS3LnOG2aou1G2M_CZDEXVT1x0f7b5NcHNI
 
 {
     "Name":"Saudi Pro League"
@@ -15,10 +15,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hc
 ###
 POST http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/add/participants/team
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ1c2VyQGV4ZWMuZm9vdGJhbGwiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImV4ZWN1dGl2ZXMtaWQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJFeGVjdXRpdmUiLCJleHAiOjE3NzgzNzU5MTN9.ANIxIDu93Rf4-6wfeKkaCJF_LdTLEgW0EeIAU7lEd2Q
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ1c2VyQGV4ZWMuZm9vdGJhbGwiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImV4ZWN1dGl2ZXMtaWQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJFeGVjdXRpdmUiLCJleHAiOjE3NzgzODc3MjR9.oF4JZYWFtS3LnOG2aou1G2M_CZDEXVT1x0f7b5NcHNI
 
 {
-    "TeamName":"Middlesborough FC"
+    "TeamName":"Mulumbu  FC"
 }
 
 ###
@@ -46,13 +46,13 @@ POST http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/
 GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/match/fixtures 
 
 ###  
-POST http://localhost:5276/api/tournaments/update/standings/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/7e4879e0a8db4a0f9a56a0467510f47f
+POST http://localhost:5276/api/tournaments/update/standings/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/7e9591184a6d43908e1e6d968222a0d5
 
 ###
 GET http://localhost:5276/api/tournaments/ffb24b388-09b1-40eb-8f4d-c9f6f9bed830/table
 
 ###
-GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/group/21681239-864b-4f52-8db9-b7d6493f04d5/table/standings
+GET http://localhost:5276/api/tournaments/fb24b388-09b1-40eb-8f4d-c9f6f9bed830/group/135e47e2-5b42-47a9-94ed-3b1524e105b1/table/standings
 
 
 ###
